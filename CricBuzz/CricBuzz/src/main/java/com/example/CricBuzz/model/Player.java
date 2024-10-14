@@ -27,4 +27,12 @@ public class Player {
 
     @Enumerated(EnumType.STRING)
     Speciality speciality;
+
+    @ManyToOne
+    @JoinColumn
+    Team team;
+
+    @OneToOne(mappedBy = "player")
+    Stats stats;
 }
+

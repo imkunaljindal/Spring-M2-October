@@ -1,15 +1,14 @@
 package com.example.CricBuzz.model;
 
 import com.example.CricBuzz.model.Enum.MatchType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +16,7 @@ import java.util.Date;
 @Setter
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Match {
+public class CricketMatch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +32,12 @@ public class Match {
 
     @CreationTimestamp
     Date startedAt;
+
+    @ManyToMany
+    @JoinTable( name = "match_team",
+            joinColumns = {
+            @JoinColumn(name = "cricket_match_id") },
+            inverseJoinColumns = { @JoinColumn(name = "team_id") })
+    List<Team> teams = new ArrayList<>();
+
 }
