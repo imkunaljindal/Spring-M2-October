@@ -1,5 +1,6 @@
 package com.example.CricBuzz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Team {
@@ -26,8 +28,10 @@ public class Team {
     int iccPoints;
 
     @OneToMany(mappedBy = "team")
+    @JsonIgnore
     List<Player> players = new ArrayList<>();
 
     @ManyToMany(mappedBy = "teams")
+    @JsonIgnore
     List<CricketMatch> matches = new ArrayList<>();
 }

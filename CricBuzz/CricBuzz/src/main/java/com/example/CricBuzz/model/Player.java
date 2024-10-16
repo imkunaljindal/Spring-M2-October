@@ -2,15 +2,18 @@ package com.example.CricBuzz.model;
 
 import com.example.CricBuzz.model.Enum.Gender;
 import com.example.CricBuzz.model.Enum.Speciality;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.context.annotation.Configuration;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Player {
 
@@ -32,7 +35,7 @@ public class Player {
     @JoinColumn
     Team team;
 
-    @OneToOne(mappedBy = "player")
+    @OneToOne(mappedBy = "player",cascade = CascadeType.ALL)
     Stats stats;
 }
 

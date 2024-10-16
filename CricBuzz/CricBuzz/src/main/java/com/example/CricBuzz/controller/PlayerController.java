@@ -1,12 +1,17 @@
 package com.example.CricBuzz.controller;
 
+import com.example.CricBuzz.dto.request.PlayerRequest;
+import com.example.CricBuzz.dto.response.PlayerResponse;
+import com.example.CricBuzz.model.Enum.Gender;
+import com.example.CricBuzz.model.Enum.Speciality;
 import com.example.CricBuzz.model.Player;
 import com.example.CricBuzz.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/player")
@@ -16,7 +21,29 @@ public class PlayerController {
     PlayerService playerService;
 
     @PostMapping
-    public Player addPlayer(@RequestBody Player player) {
-        return playerService.addPlayer(player);
+    public ResponseEntity addPlayer(@RequestBody PlayerRequest playerRequest) {
+        PlayerResponse response = playerService.addPlayer(playerRequest);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public PlayerResponse getPlayer(@RequestParam("player-id") int playerId) {
+        return playerService.getPlayer(playerId);
+    }
+
+    // get all the players of a particular gender
+    // input -> gender
+    // output -> List<PlayerResponse>
+    @GetMapping("/gender/{gender}")
+    public List<PlayerResponse> getPlayerByGender(@PathVariable("gender") Gender gender) {
+        return playerService.getPlayerByGender(gender);
+    }
+
+    // get all the players of a particular gender and a particular
+    // input -> gender and speciality
+    @GetMapping("/gender/{gender}/speciality/{speciality}")
+    public List<PlayerResponse> getPlayerByGenderAndSpeciality(@PathVariable("gender") Gender gender,
+                                          @PathVariable("speciality") Speciality speciality) {
+        return playerService.getPlayerByGenderAndSpeciality(gender,speciality);
     }
 }

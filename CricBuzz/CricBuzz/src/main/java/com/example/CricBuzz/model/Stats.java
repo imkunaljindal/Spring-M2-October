@@ -1,5 +1,6 @@
 package com.example.CricBuzz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Stats {
@@ -26,5 +28,6 @@ public class Stats {
 
     @OneToOne
     @JoinColumn
+    @JsonIgnore
     Player player;
 }
