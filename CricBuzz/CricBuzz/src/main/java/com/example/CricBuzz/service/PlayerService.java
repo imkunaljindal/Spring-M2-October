@@ -9,6 +9,8 @@ import com.example.CricBuzz.model.Enum.Speciality;
 import com.example.CricBuzz.model.Player;
 import com.example.CricBuzz.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,10 +23,30 @@ public class PlayerService {
     @Autowired
     PlayerRepository playerRepository;
 
+    @Autowired
+    JavaMailSender javaMailSender;
+
     public PlayerResponse addPlayer(PlayerRequest playerRequest) {
         Player player = PlayerConvertor.playerRequestToPlayer(playerRequest);
         Player savedPlayer = playerRepository.save(player);
+
+        sendEmail(savedPlayer);
         return PlayerConvertor.playerToPlayerResponse(savedPlayer);
+    }
+
+    private void sendEmail(Player savedPlayer) {
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+
+        String text = "Hey "+savedPlayer.getName()+" you have been successfully registered in Cricbuzz application."
+                + " with speciality as " + savedPlayer.getSpeciality();
+
+        mailMessage.setSubject("Registration successful");
+        mailMessage.setFrom("acciojobspring@gmail.com");
+        mailMessage.setTo(savedPlayer.getEmail());
+        mailMessage.setText(text);
+
+        javaMailSender.send(mailMessage);
     }
 
 

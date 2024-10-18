@@ -21,4 +21,6 @@ public class PlayerRequest {
     Gender gender;
 
     Speciality speciality;
+
+    String email;
 }

@@ -31,6 +31,8 @@ public class Player {
     @Enumerated(EnumType.STRING)
     Speciality speciality;
 
+    String email;
+
     @ManyToOne
     @JoinColumn
     Team team;
