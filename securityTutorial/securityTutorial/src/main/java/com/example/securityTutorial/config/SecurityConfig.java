@@ -2,6 +2,7 @@ package com.example.securityTutorial.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -14,12 +15,16 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .authorizeHttpRequests()
+                .requestMatchers("/api/v1/home").permitAll()
+//                .requestMatchers("/api/v1/admin").hasRole("ADMIN")
+//                .requestMatchers("/api/v1/student").hasRole("STUDENT")
                 .anyRequest()
                 .authenticated()
                 .and()
